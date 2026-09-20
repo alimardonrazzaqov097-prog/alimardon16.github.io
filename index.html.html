@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Razzaqov Alimardon — IT mutaxassisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF9F6; --ink: #16181B; --ink-soft: #52565C; --line: #DEDBD3;
+    --accent: #0E6BA8; --accent-soft: #E3F0F8; --tag-bg: #F0EFEA;
+    color-scheme: light;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --paper: #15161A; --ink: #F2F1ED; --ink-soft: #A7A9B0; --line: #2C2E34;
+      --accent: #6FC1F0; --accent-soft: #16283A; --tag-bg: #1F2026;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #15161A; --ink: #F2F1ED; --ink-soft: #A7A9B0; --line: #2C2E34;
+    --accent: #6FC1F0; --accent-soft: #16283A; --tag-bg: #1F2026;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 20px); }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    transition: background .3s ease, color .3s ease;
+    position: relative;
+  }
+  /* subtle circuit-board texture across the whole page */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: .05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%230E6BA8' stroke-width='1.4'%3E%3Cpath d='M20 0 V40 H60 V80'/%3E%3Cpath d='M140 20 H100 V60'/%3E%3Cpath d='M0 100 H40 V140 H80 V160'/%3E%3Cpath d='M160 120 H120 V90'/%3E%3Ccircle cx='60' cy='80' r='3.5'/%3E%3Ccircle cx='100' cy='60' r='3.5'/%3E%3Ccircle cx='80' cy='140' r='3.5'/%3E%3Ccircle cx='120' cy='90' r='3.5'/%3E%3Ccircle cx='20' cy='0' r='2.5'/%3E%3Ccircle cx='140' cy='20' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
+  h1, h2, h3 { font-family: 'Newsreader', Georgia, serif; font-weight: 500; letter-spacing: -0.01em; margin: 0; }
+  a { color: inherit; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  .theme-toggle {
+    position: fixed; top: calc(env(safe-area-inset-top, 0px) + 20px); right: 24px;
+    background: rgba(255,255,255,0.14); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.35); border-radius: 100px;
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #fff; font-size: 15px; z-index: 20;
+  }
+
+  /* ---- Sea hero ---- */
+  header.hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(180deg, #04223A 0%, #0B4E7C 55%, #1782B4 100%);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .sun {
+    position: absolute; z-index: 2; right: 12%; top: 16%;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #FFF6DC, #FFD98A 55%, #FFC15C 100%);
+    box-shadow: 0 0 46px 6px rgba(255, 210, 130, .35);
+    animation: bob 7s ease-in-out infinite;
+  }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  @keyframes bob2 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-9px) rotate(4deg); } }
+  @keyframes bob3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+  .tech-glyph { position: absolute; z-index: 2; color: rgba(255,255,255,0.5); font-family: 'IBM Plex Sans', monospace; }
+  .glyph-code { left: 8%; top: 22%; font-size: 22px; animation: bob2 8s ease-in-out infinite; }
+  .glyph-wifi { left: 74%; top: 40%; width: 26px; height: 26px; animation: bob 6s ease-in-out infinite .5s; }
+  .glyph-chip { left: 20%; top: 46%; width: 24px; height: 24px; animation: bob3 9s ease-in-out infinite; }
+
+  .avatar {
+    width: 76px; height: 76px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.55);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Newsreader', serif; font-size: 26px; color: #F6FBFF;
+    margin-bottom: 24px;
+  }
+
+  .hero-content {
+    position: relative; z-index: 3; padding: 108px 0 190px;
+    opacity: 0; transform: translateY(10px); animation: rise .9s ease forwards .1s;
+  }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  header.hero .role-line { color: #A9DBFF; font-size: 15px; font-weight: 500; margin: 0 0 18px; }
+  header.hero h1 { color: #F6FBFF; font-size: clamp(2.4rem, 6vw, 3.4rem); line-height: 1.08; max-width: 13ch; }
+  header.hero p.tagline { margin-top: 22px; max-width: 46ch; color: #D3EAF7; font-size: 17px; }
+  .hero-actions { display: flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; padding: 11px 22px; border-radius: 4px; font-size: 15px; text-decoration: none; font-weight: 500; border: 1px solid transparent; }
+  .btn-primary { background: #F6FBFF; color: #0B4E7C; }
+  .btn-ghost { border-color: rgba(255,255,255,0.5); color: #F6FBFF; }
+
+  .ocean { position: absolute; left: 0; right: 0; bottom: 0; height: 62%; z-index: 1; pointer-events: none; }
+  .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; animation: waveMove linear infinite; }
+  .wave.w1 { fill: #E9F7FF; opacity: .14; animation-duration: 19s; }
+  .wave.w2 { fill: #E9F7FF; opacity: .22; animation-duration: 13s; animation-direction: reverse; }
+  .wave.w3 { fill: #E9F7FF; opacity: .38; animation-duration: 9s; }
+  @keyframes waveMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .wave, .sun, .tech-glyph { animation: none; }
+    .hero-content, .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+  /* ---- end sea hero ---- */
+
+  section { padding: 56px 0; border-top: 1px solid var(--line); position: relative; z-index: 1; }
+  section h2 { font-size: 1.6rem; margin-bottom: 22px; display: flex; align-items: center; gap: 12px; }
+  .section-icon {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  #about p { max-width: 62ch; color: var(--ink-soft); font-size: 16px; }
+  #about p + p { margin-top: 14px; }
+
+  .goal-card {
+    background: var(--accent-soft); border-radius: 8px; padding: 22px 24px;
+    margin-top: 24px; border-left: 3px solid var(--accent);
+  }
+  .goal-card p { margin: 0; color: var(--ink); max-width: 58ch; font-size: 15.5px; }
+
+  .skill-group { margin-bottom: 22px; }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-group .label { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { background: var(--tag-bg); padding: 6px 13px; border-radius: 4px; font-size: 14px; }
+
+  /* IT news / trends cards */
+  .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .news-card {
+    background: var(--tag-bg); border-radius: 10px; padding: 20px;
+    transition: transform .25s ease, box-shadow .25s ease;
+    border: 1px solid var(--line);
+  }
+  .news-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(14,107,168,0.12); }
+  .news-icon {
+    width: 38px; height: 38px; border-radius: 8px; background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 14px; color: var(--accent);
+  }
+  .news-card h3 { font-size: 1.02rem; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; margin-bottom: 8px; }
+  .news-card p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.55; }
+  @media (max-width: 560px) { .news-grid { grid-template-columns: 1fr; } }
+
+  .lang-row { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .lang-row:last-child { margin-bottom: 0; }
+  .lang-name { width: 120px; font-size: 14.5px; flex-shrink: 0; }
+  .lang-bar { flex: 1; height: 6px; background: var(--tag-bg); border-radius: 100px; overflow: hidden; }
+  .lang-fill { height: 100%; background: var(--accent); border-radius: 100px; width: 0; transition: width 1.1s cubic-bezier(.2,.8,.2,1); }
+  .lang-level { font-size: 13px; color: var(--ink-soft); width: 64px; text-align: right; flex-shrink: 0; }
+
+  .learning-list { display: flex; flex-direction: column; gap: 14px; }
+  .learning-item { display: flex; gap: 14px; align-items: flex-start; }
+  .learning-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-top: 8px; flex-shrink: 0; }
+  .learning-item div p { margin: 0; }
+  .learning-item .t { font-weight: 500; font-size: 15.5px; }
+  .learning-item .d { color: var(--ink-soft); font-size: 14.5px; margin-top: 2px; }
+
+  .job { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 20px 0; border-bottom: 1px solid var(--line); transition: padding-left .25s ease; }
+  .job:hover { padding-left: 6px; }
+  .job:first-child { padding-top: 0; }
+  .job:last-child { border-bottom: none; padding-bottom: 0; }
+  .job-top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+  .job-title { font-weight: 600; }
+  .job-period { color: var(--ink-soft); font-size: 14px; }
+  .job-company { color: var(--accent); font-size: 14.5px; margin-top: 2px; }
+  .job p.desc { color: var(--ink-soft); margin-top: 8px; max-width: 60ch; }
+
+  #contact { text-align: left; }
+  .contact-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .contact-list a {
+    text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 14px;
+    padding: 10px 12px; margin: 0 -12px; border-radius: 8px; transition: background .2s ease;
+  }
+  .contact-list a:hover { background: var(--tag-bg); }
+  .contact-icon {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .contact-text { display: flex; flex-direction: column; gap: 1px; }
+  .contact-list .k { color: var(--ink-soft); font-size: 12.5px; }
+  .contact-list .v { font-size: 15.5px; }
+  .contact-list a:hover .v { text-decoration: underline; text-underline-offset: 3px; }
+
+  footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); color: var(--ink-soft); font-size: 13.5px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; position: relative; z-index: 1; }
+  footer .back-top { color: var(--accent); text-decoration: none; font-size: 13.5px; }
+
+  @media (max-width: 520px) {
+    .hero-content { padding: 100px 0 140px; }
+    .wrap { padding: 0 20px; }
+    .sun { width: 46px; height: 46px; right: 8%; top: 10%; }
+    .lang-name { width: 92px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Rejimni almashtirish">◐</button>
+
+<header class="hero">
+  <div class="sun" aria-hidden="true"></div>
+  <div class="tech-glyph glyph-code" aria-hidden="true">&lt;/&gt;</div>
+  <svg class="tech-glyph glyph-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <path d="M2 8.5C7 3.8 17 3.8 22 8.5"/><path d="M5.5 12.2C9 9 15 9 18.5 12.2"/><path d="M9 15.8C10.8 14.2 13.2 14.2 15 15.8"/><circle cx="12" cy="19" r="1.1" fill="currentColor" stroke="none"/>
+  </svg>
+  <svg class="tech-glyph glyph-chip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+    <rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5"/>
+    <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
+  </svg>
+  <div class="ocean" aria-hidden="true">
+    <svg class="wave w1" viewBox="0 0 1920 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 C120,40 360,40 480,80 C600,120 840,120 960,80 C1080,40 1320,40 1440,80 C1560,120 1800,120 1920,80 L1920,220 L0,220 Z"/>
+    </svg>
+    <svg class="wave w2" viewBox="0 0 1920 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,100 C140,70 300,70 440,100 C580,130 780,130 920,100 C1060,70 1220,70 1360,100 C1500,130 1700,130 1840,100 L1920,110 L1920,220 L0,220 Z"/>
+    </svg>
+    <svg class="wave w3" viewBox="0 0 1920 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,130 C160,110 320,150 480,130 C640,110 800,150 960,130 C1120,110 1280,150 1440,130 C1600,110 1760,150 1920,130 L1920,220 L0,220 Z"/>
+    </svg>
+  </div>
+  <div class="wrap hero-content">
+    <div class="avatar">RA</div>
+    <p class="role-line">IT mutaxassisi</p>
+    <h1>Razzaqov Alimardon</h1>
+    <p class="tagline">Kompyuter injiniring yo'nalishida ta'lim olib, DMED yagona tibbiy axborot tizimi bo'yicha amaliy tajriba to'plamoqdaman.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="mailto:alimardonrazzaqov097@gmail.com">Email yozish</a>
+      <a class="btn btn-ghost" href="#experience">Tajribamni ko'rish</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section id="about" class="reveal">
+    <h2><span class="section-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span>Men haqimda</h2>
+    <p>Qo'qon universitetining kompyuter injiniring yo'nalishida ta'lim olayotgan talabaman. Kompyuter va raqamli qurilmalarni o'rganishga qiziqaman — ularning ichki tuzilishidan tortib, ulardan amaliyotda foydalanish usullarigacha.</p>
+    <p>Hozirda DMED yagona tibbiy axborot tizimi bo'yicha mutaxassis sifatida faoliyat yuritaman.</p>
+    <div class="goal-card">
+      <p>Maqsadim — IT sohasida professional sifatida rivojlanish, tibbiy axborot tizimlari va tarmoq infratuzilmasi yo'nalishida chuqur bilim va tajriba orttirish.</p>
+    </div>
+  </section>
+
+  <section id="itnews" class="reveal">
+    <h2><span class="section-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H8l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></span>IT dunyosidan</h2>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        </div>
+        <h3>Sun'iy intellekt</h3>
+        <p>AI tizimlari tibbiyot, ta'lim va biznesda kundalik jarayonlarga tobora chuqurroq kirib bormoqda.</p>
+      </div>
+      <div class="news-card">
+        <div class="news-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="7" rx="1.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="8" cy="14.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <h3>Kiberxavfsizlik</h3>
+        <p>Raqamli tizimlar ko'payishi bilan xavfsizlik mutaxassislariga talab yildan-yilga oshib bormoqda.</p>
+      </div>
+      <div class="news-card">
+        <div class="news-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 18H6a4 4 0 0 1-1-7.87A5.5 5.5 0 0 1 15.9 8.3 4.5 4.5 0 0 1 17.5 18Z"/></svg>
+        </div>
+        <h3>Bulutli texnologiyalar</h3>
+        <p>Kompaniyalar ma'lumotlarini bulutda saqlash va boshqarishga o'tishi yildan-yilga tezlashmoqda.</p>
+      </div>
+      <div class="news-card">
+        <div class="news-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-2 1-5-2-6a5 5 0 0 0-9.5-1.5A4.5 4.5 0 0 0 6 15"/><path d="M12 12v9M9 18l3 3 3-3"/></svg>
+        </div>
+        <h3>Tibbiy axborot tizimlari</h3>
+        <p>Kasalxonalarni raqamlashtirish davolash sifatini va jarayonlar tezligini sezilarli oshirmoqda.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="reveal">
+    <h2><span class="section-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14.7 6.3 3 3-8.4 8.4-3.8.8.8-3.8 8.4-8.4Z"/><path d="m13 8 3 3"/></svg></span>Ko'nikmalar va qiziqishlar</h2>
+    <div class="skill-group">
+      <div class="label">Yo'nalish</div>
+      <div class="tags">
+        <span class="tag">Kompyuter injiniring</span>
+        <span class="tag">Raqamli qurilmalar</span>
+        <span class="tag">Tibbiy axborot tizimlari</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="label">Amaliy sohalar</div>
+      <div class="tags">
+        <span class="tag">Kompyuter texnikasi</span>
+        <span class="tag">Tizim administratsiyasi</span>
+        <span class="tag">DMED tizimi</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="languages" class="reveal">
+    <h2><span class="section-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 4 5.8 4 9s-1.5 6.4-4 9c-2.5-2.6-4-5.8-4-9s1.5-6.4 4-9Z"/></svg></span>Tillar</h2>
+    <div class="lang-row">
+      <span class="lang-name">O'zbek tili</span>
+      <div class="lang-bar"><div class="lang-fill" data-width="100"></div></div>
+      <span class="lang-level">Ona tili</span>
+    </div>
+    <div class="lang-row">
+      <span class="lang-name">Rus tili</span>
+      <div class="lang-bar"><div class="lang-fill" data-width="80"></div></div>
+      <span class="lang-level">Yaxshi</span>
+    </div>
+    <div class="lang-row">
+      <span class="lang-name">Ingliz tili</span>
+      <div class="lang-bar"><div class="lang-fill" data-width="55"></div></div>
+      <span class="lang-level">O'rta</span>
+    </div>
+  </section>
+
+  <section id="learning" class="reveal">
+    <h2><span class="section-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5.5c2.5-1.3 5.5-1.3 8 0 2.5-1.3 5.5-1.3 8 0v13c-2.5-1.3-5.5-1.3-8 0-2.5-1.3-5.5-1.3-8 0v-13Z"/><path d="M12 5.5v13"/></svg></span>Hozir o'rganayotgan narsalarim</h2>
+    <div class="learning-list">
+      <div class="learning-item">
+        <span class="learning-dot"></span>
+        <div>
+          <p class="t">Tarmoq xavfsizligi asoslari</p>
+          <p class="d">Tarmoqlarni himoyalash va monitoring qilish bo'yicha bilimlarni chuqurlashtirmoqdaman.</p>
+        </div>
+      </div>
+      <div class="learning-item">
+        <span class="learning-dot"></span>
+        <div>
+          <p class="t">Server administratsiyasi</p>
+          <p class="d">Serverlarni sozlash va boshqarish amaliyotini o'rganmoqdaman.</p>
+        </div>
+      </div>
+      <div class="learning-item">
+        <span class="learning-dot"></span>
+        <div>
+          <p class="t">SQL va ma'lumotlar bazalari</p>
+          <p class="d">Tibbiy axborot tizimlarida ishlatiladigan ma'lumotlar bazalarini yaxshiroq tushunish uchun.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="reveal">
+    <h2><span class="section-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M8 7.5V5.5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12.5h18"/></svg></span>Tajriba va ta'lim</h2>
+    <div class="job">
+      <div class="job-top">
+        <span class="job-title">IT mutaxassisi</span>
+        <span class="job-period">Hozirgacha</span>
+      </div>
+      <div class="job-company">DMED — yagona tibbiy axborot tizimi</div>
+      <p class="desc">Tizimning kundalik ishlashini ta'minlash va texnik masalalarni hal qilish bo'yicha mas'ulman.</p>
+    </div>
+    <div class="job">
+      <div class="job-top">
+        <span class="job-title">Kompyuter injiniring yo'nalishi, talaba</span>
+        <span class="job-period">Hozirgacha</span>
+      </div>
+      <div class="job-company">Qo'qon universiteti</div>
+      <p class="desc">Kompyuter tizimlari, raqamli qurilmalar va dasturlash asoslari bo'yicha ta'lim olmoqdaman.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <h2><span class="section-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Z"/><path d="M4 5h16M9 21v-6h6v6"/></svg></span>Aloqa</h2>
+    <div class="contact-list">
+      <a href="https://www.google.com/maps?q=40.5610064,71.8951944" target="_blank" rel="noopener">
+        <span class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        </span>
+        <span class="contact-text"><span class="k">Manzil</span><span class="v">Uy manzili — xaritada ko'rish</span></span>
+      </a>
+      <a href="mailto:alimardonrazzaqov097@gmail.com">
+        <span class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6.5 9 6.5 9-6.5"/></svg>
+        </span>
+        <span class="contact-text"><span class="k">Email</span><span class="v">alimardonrazzaqov097@gmail.com</span></span>
+      </a>
+      <a href="tel:+998932349118">
+        <span class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 3.5h4l2 5-2.5 1.6a11 11 0 0 0 5.9 5.9l1.6-2.5 5 2v4a1.5 1.5 0 0 1-1.6 1.5A17.5 17.5 0 0 1 3 5.1 1.5 1.5 0 0 1 4.5 3.5Z"/></svg>
+        </span>
+        <span class="contact-text"><span class="k">Telefon</span><span class="v">+998 93 234 91 18</span></span>
+      </a>
+      <a href="https://t.me/kim_2_26yordamchi" target="_blank" rel="noopener">
+        <span class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M21 4 2.5 11.4c-.9.36-.9 1.62.02 1.96l4.53 1.66 1.75 5.6c.24.76 1.24.96 1.76.36l2.44-2.8 4.65 3.4c.74.54 1.8.14 2-.76L22 4.9c.2-.9-.7-1.6-1-.9Z"/><path d="m8.5 14.5 9.5-8.7-11 7"/></svg>
+        </span>
+        <span class="contact-text"><span class="k">Telegram</span><span class="v">@kim_2_26yordamchi</span></span>
+      </a>
+      <a href="https://instagram.com/xavfsizxudud" target="_blank" rel="noopener">
+        <span class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
+        </span>
+        <span class="contact-text"><span class="k">Instagram</span><span class="v">@xavfsizxudud</span></span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Razzaqov Alimardon</span>
+    <a class="back-top" href="#top">Yuqoriga ↑</a>
+  </footer>
+
+</div>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  toggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const effectiveIsDark = current ? current === 'dark' : prefersDark;
+    root.setAttribute('data-theme', effectiveIsDark ? 'light' : 'dark');
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  const langSection = document.getElementById('languages');
+  if (langSection) {
+    const langIo = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('.lang-fill').forEach(bar => {
+            bar.style.width = bar.getAttribute('data-width') + '%';
+          });
+          langIo.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    langIo.observe(langSection);
+  }
+</script>
+
+</body>
+</html>
